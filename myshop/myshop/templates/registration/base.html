@@ -1,0 +1,136 @@
+{% load static %}
+{% load cache %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <title>{% block title %}Бюжетерия ВИКТОРИЯ +{% endblock %}</title>
+	<link rel="stylesheet"  href="{% static 'css/index.css' %}">
+	<script type="text/javascript" src=""></script>
+	<style>
+	    div {
+	        background-color: white;
+	    }
+	</style>
+</head>
+<body>
+	<div class="header">
+		<div class="menu_inf">
+			<div class="menu_inf_bar">
+				<a href="" class="button">Магазин</a>
+				<a href="" class="button">Доставка и оплата</a>
+				<a href="" class="button">О нас</a>
+			</div>
+			
+			<div class="menu_inf_phone">
+				8-900-999-999-23
+			</div>
+		</div>
+		<div class="log">
+			<a href="{% url 'shop:product_main' %}"><img src="{% static 'css/png/Logotip2.jpg' %}" class="logotip"></a>
+			<div class="auth">
+				<a href="{% url 'favorit:favorit_detail' %}" class="hearth">
+					<!-- <div class="auth_icon_hearth"></div>
+					<div class="auth_text">
+						Избранное	
+					</div>
+ -->				</a>
+				<a href="{% url 'cart:cart_detail' %}" class="corzina">
+					<div class="auth_icon_corzina"></div>
+					
+					<div class="auth_text">
+						
+						 {% with total_items=cart|length %}
+						        {% if cart|length > 0 %}
+						 
+						           	Корзина <br>
+						                
+						                {{ cart.get_total_price }} руб.
+						          
+						        {% else %}
+						            Корзина
+						        {% endif %}
+						    {% endwith %}
+						   
+   </div>
+   
+				</a>
+				<a href="" class="button_auth">Войти</a>
+			</div>
+		</div>
+		<div class="menu">
+				<a href="{% url 'shop:product_main' %}" class="button_menu">Главная</a>
+				<a href="{% url 'shop:product_new' %}" class="button_menu">Новинки</a>
+				<div class="catalog">
+					<div class="button_catalog"> <a href="{% url 'shop:product_list' %}" class="button_menu">Бижутерия</a>
+						<div class="catalog_menu">
+							{% if products_b %}
+							<div class="catalog_bar">
+								
+								<p class="catalog_title">НОВИНКИ</p>
+								{% for product in products_b %}
+						            
+						                <a href="{{ product.get_absolute_url }}" >{{ product.name }}</a>
+						                
+						        {% endfor %}
+							</div>
+							{% endif %}
+							<div class="catalog_bar">
+								<p class="catalog_title">ПО КАТЕГОРИЯМ</p>
+								 {% for c in categories_b %}
+				                
+				                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+				                
+            					{% endfor %}
+								
+							</div>
+							<div class="catalog_slider">
+								<img class="photo_slider_css" src="{% static 'css/png/slider-1.jpg' %}" alt="">
+								  <img class="photo_slider_css" src="{% static 'css/png/slider-2.png' %}" alt="">
+								  <img class="photo_slider_css" src="{% static 'css/png/slider-3.jpg' %}" alt="">
+								  <img class="photo_slider_css" src="{% static 'css/png/slider-4.jpg' %}" alt="">
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<a href="" class="button_menu">О доставке</a>
+				<a href="" class="button_menu">О компании</a>
+		</div>
+	</div>
+	
+	<div class="content">
+    {% block content %}
+    {% endblock %}
+</div>
+	<div class="footer">
+		<hr>
+		<div class="footerbar">
+			<div>
+				<p class="footerbar_title">ОБРАТНАЯ СВЯЗЬ</p>
+				<a href="">Тел. 8-900-900-900-23</a>
+				<a href="">Вопросы и ответы</a>
+				<a href="">Доставка</a>
+				<a href="">Отзывы</a>
+			</div>
+			<div>
+				<p class="footerbar_title">НАША КОМПАНИЯ</p>
+				<a href="">Магазин</a>
+				<a href="">Сотрудники</a>
+				
+			</div>
+			<div>
+				
+			</div>
+			<div>
+				<p class="footerbar_title">ПРИСОЕДИНЯЙСЯ</p>
+				<a href=""><img src="{% static 'css/png/vk.png' %}"></a>
+			</div>
+		</div>
+		<hr>
+		<p class="print">© Интернет-магазин ВИКТОРИЯ +</p>
+	</div>
+	<script src="js/jquery.js"></script>
+</body>
+</html>

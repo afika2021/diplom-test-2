@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Brends{% endif %}
+{% endblock %}
+{% block content %}
+<div class="new_body">
+    <div id="main_n" class="product-list">
+       <h1 style="width: 100%">О магазине</h1>
+       <p>Этот проект является Курсовой работой студента СТМИиТ. Все что есть на сайте является демонстрацией знаний. Сайт не имеет торговых соглашений и связи с нологовой, так что сайт имеет только демонстративный характер.</p>
+    </div>
+</div>
+{% endblock %}

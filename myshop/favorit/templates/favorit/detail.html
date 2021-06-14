@@ -1,0 +1,45 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+  Избранное
+{% endblock %}
+
+{% block content %}
+<div class="cart_conteiner">
+  
+    <div class="cart_body">
+      <div class="cart_items">
+      {% for item in favorit %}
+        {% with product=item.product %}
+        <hr>
+          <div class="cart_list">
+              <a href="{{ product.get_absolute_url }}">
+                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %} " style="    flex-shrink: 0; object-fit: contain; width: 300px; height: 300px; ">
+              </a>
+          
+            <div class="product_inf">
+              <div class="cart_list_title">{{ product.name }}</div>
+              
+              <a href="{% url "favorit:favorit_remove" product_id=product.id %}" class="button upd-b">Удалить</a>
+              <div>
+              <div class="num-c">Стоимость: {{ item.price }} руб./шт</div>
+              
+              </div>
+            </div>
+            
+          </div>
+        {% endwith %}
+      {% endfor %}
+          </div>
+    
+  <!-- </table> -->
+  <!-- <p class="text-right">
+    <a href="{% url 'shop:product_list' %}" class="button light">Continue shopping</a>
+    <a href="{% url 'orders:order_create' %}" class="button">
+    Checkout
+</a> -->
+
+  </p>
+  </div>
+{% endblock %}

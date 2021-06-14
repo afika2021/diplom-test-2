@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Brends{% endif %}
+{% endblock %}
+{% block content %}
+<div class="new_body">
+    <div id="main_n" class="product-list">
+       <a href=""><img src="{% static 'css/png/Oreo_95.png '%}"  style="    flex-shrink: 0; object-fit: contain; width: 330px; height: 300px"></a>
+       <a href=""><img src="{% static 'css/png/logo-milka.png '%}"  style="    flex-shrink: 0; object-fit: contain; width: 330px; height: 300px"></a>
+       <a href=""><img src="{% static 'css/png/KitKat_logo.svg_.png' %}"  style="    flex-shrink: 0; object-fit: contain; width: 330px; height: 300px"></a>
+        <a href=""><img src="{% static 'css/png/Snickers_logo.png' %}"  style="    flex-shrink: 0; object-fit: contain; width: 330px; height: 300px"></a>
+       <a href=""><img src="{% static 'css/png/milkiway.jpg' %}"  style="    flex-shrink: 0; object-fit: contain; width: 330px; height: 300px"></a>
+       <a href=""><img src="{% static 'css/png/twix.png' %}"  style="    flex-shrink: 0; object-fit: contain; width: 330px; height: 300px"></a>  
+       
+    </div>
+</div>
+{% endblock %}

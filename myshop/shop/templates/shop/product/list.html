@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Бижутерия{% endif %}
+{% endblock %}
+{% block content %}
+    <div class="product-body">
+
+      
+        <label class="cat-menu hiden-c" for="tap-menu-c"><img src="{% static "img/filter.png" %}" style="width: 60px;height: 60px;z-index: 0;margin-right: 10px"><div style="font-size: 32px;"> Фильтр</div></label>
+<input type="checkbox" class="hiden-inp" id="tap-menu-c" name="tap-menu-c">
+<div id="sidebar" class="sidebar">
+        <label class="tap-exit hiden-c" for="tap-menu-c"><img src="{% static "img/exit.png" %}" class="tap-bar-exit"></label>
+        <h3 class="catalog_title">Категории</h3>
+        
+                <a href="{% url 'shop:product_list' %}" <li {% if not category %}class="selected button"{% else %}  class="button" {% endif %}>Все</a>
+                
+                {% for c in categories %}
+               
+                <a href="{{ c.get_absolute_url }}" {% if category.slug == c.slug %}class="selected button"{% else %}  class="button" {% endif %}>{{ c.name }}</a>
+               
+            {% endfor %}
+       <!--  <h3 class="catalog_title">Сплавы</h3>
+        
+        
+                <
+                {% for c in categories %}
+               
+                <a href="{{ c.get_absolute_url_a }}" {% if alloy.slug == c.slug %}class="selected button"{% else %}  class="button" {% endif %}>{{ c.name }}</a>
+               
+            {% endfor %} -->
+             {% include "shop/product/search.html" %}
+            
+    </div>
+
+
+    <div id="main" class="product-list">
+        <h1 class="catalog_title">{% if category %}{{ category.name }}{% else %}Наша продукция{% endif %}</h1>
+        <script>
+                AOS.init({
+                  duration: 1200,
+                })
+            </script>
+        {% if products|length > 0 %}
+        
+        {% for product in products %}
+            <div class="item" data-aos="zoom-in">
+                <a href="{{ product.get_absolute_url }}">
+                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" style="    flex-shrink: 0; object-fit: contain; width: 100%; height: 300px;border-radius: 15px;border: 1px solid rgb(#c0c0c0);">
+                </a>
+                <div class="product_price"> {{ product.price }} руб./шт </div>
+                 <a href="{{ product.get_absolute_url }}" class="product_title">{{ product.name }} {% if product.id > 999 %}({{product.id}}){% elif product.id > 99 %} (0{{product.id}}) {% elif  product.id > 9 %} (00{{product.id}}) {% else %} (000{{product.id}}) {%endif %}</a>
+                <div class="item_add_cart">
+                     <form action="{% url "cart:cart_add" product.id %}" method="post">
+                        {{ cart_product_form }}
+                        {% csrf_token %}
+                        <input type="submit" value="Добавить в корзину" class="button_menu" style="width: auto; padding: 0 15px;">
+                     </form>
+                      
+                </div>
+            </div>
+        {% endfor %}
+         {% include "shop/product/pagination.html" with page=products %} 
+    </div>
+    {% else %}
+    <h1 class="catalog_title">К сожеление товар не был найден. <br><a href="{% url 'shop:product_list' %}"> Вы можете перйти в каталог для поиска нужного вам товара</a></h1>
+         
+    {% endif %}
+    </div>
+    
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+    <h1 class="catalog_title">Оформление заказа</h1>
+    <div class="order-info">
+        <h3 class="catalog_title order-h">Ваши выбранные товары</h3>
+       <ul>
+    {% for item in cart %}
+        <li>
+            {{ item.quantity }}x {{ item.product.name }}({% if item.product.id > 999 %}{{item.product.id}}{% elif item.product.id > 99 %} 0{{item.product.id}} {% elif  item.product.id > 9 %} 00{{item.product.id}} {% else %} 000{{item.product.id}} {%endif %})
+            <span>{{ item.total_price }} руб.</span>
+        </li>
+    {% endfor %}
+    {% if cart.coupon %}
+        <li>
+            "{{ cart.coupon.code }}" ({{ cart.coupon.discount }}% от суммы)
+            <span>- {{ cart.get_discount|floatformat:"2" }} руб.</span>
+        </li>
+    {% endif %}
+</ul>
+        
+        <p class="catalog_title order-h">Итого: {{ cart.get_total_price_after_discount|floatformat:"2" }} руб.</p>
+    </div>  
+    <h1 class="catalog_title order-h">Ваши данные</h1>
+    <form action="." method="post" class="order-form">
+        {{ form.as_p }}
+        <p><input type="submit" value="Оформить" class="button"></p>
+        {% csrf_token %}
+    </form>
+{% endblock %}

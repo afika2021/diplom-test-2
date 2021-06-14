@@ -1,0 +1,192 @@
+{% load static %}
+{% load cache %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <title>{% block title %}Бюжетерия ВИКТОРИЯ +{% endblock %}</title>
+	<link rel="stylesheet"  href="{% static 'css/index.css' %}">
+	<script type="text/javascript" src="{% static 'js/items.js' %}"></script>
+	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<style>
+	    div {
+	        background-color: white;
+	    }
+	</style>
+</head>
+<body>
+	<div class="header">
+		<div class="menu_inf">
+			<div class="menu_inf_bar">
+				<a href="{% url 'shop:product_shop_i' %}" class="button">Магазин</a>
+				<a href="{% url 'shop:product_delivery' %}" class="button">Доставка и оплата</a>
+				<a href="{% url 'shop:product_inform' %}" class="button">О нас</a>
+			</div>
+			
+			<div class="menu_inf_phone">
+				8-912-463-92-93
+			</div>
+		</div>
+		<div class="log">
+			<a href="{% url 'shop:product_main' %}"><img src="{% static 'css/png/Logotip2.jpg' %}" class="logotip"></a>
+			<div class="auth">
+				
+				<a href="{% url 'cart:cart_detail' %}" class="corzina">
+					<div class="auth_icon_corzina"></div>
+					
+					<div class="auth_text">
+						
+						 {% with total_items=cart|length %}
+						        {% if cart|length > 0 %}
+						 
+						           	Корзина <br>
+						                
+						                {{ cart.get_total_price }} руб.
+						          
+						        {% else %}
+						            Корзина
+						        {% endif %}
+						    {% endwith %}
+						   
+   </div>
+
+   
+				</a>
+
+				<div>
+				{% if user.is_authenticated %}
+     <p class="auth-p">Пользователь: {{ user.get_username }}</p>
+     <p class="auth-p but-auth"><a href="{% url 'logout'%}?next={{request.path}}" class="auth-b">Выйти из аккаунта</a></p>
+   {% else %}
+   				
+				<a href="{% url 'login'%}?next={{request.path}}" class="button_auth">Войти в аккаунт</a>
+				{% endif %}
+				</div>
+			</div>
+
+			
+
+			<label class="tap-menu" for="tap-menu-b"><img src="{% static "img/tool_bar.png" %}" style="width: 100%;height: 100%;z-index: 0;"></label>
+
+		</div>
+		<div class="menu">
+				<a href="{% url 'shop:product_main' %}" class="button_menu">Главная</a>
+				<a href="{% url 'shop:product_new' %}" class="button_menu">Новинки</a>
+				<div class="catalog">
+					<div class="button_catalog"> <a href="{% url 'shop:product_list' %}" class="button_menu">Бижутерия</a>
+						<div class="catalog_menu">
+							{% if products_b %}
+							<div class="catalog_bar">
+								
+								<p class="catalog_title">НОВИНКИ</p>
+								{% for product in products_b %}
+						            
+						                <a href="{{ product.get_absolute_url }}" >{{ product.name }} {% if product.id > 999 %}({{product.id}}){% elif product.id > 99 %} (0{{product.id}}) {% elif  product.id > 9 %} (00{{product.id}}) {% else %} (000{{product.id}}) {%endif %}</a>
+						                
+						        {% endfor %}
+							</div>
+							{% endif %}
+							<div class="catalog_bar">
+								<p class="catalog_title">ПО КАТЕГОРИЯМ</p>
+								 {% for c in categories_b %}
+				                
+				                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+				                
+            					{% endfor %}
+								
+							</div>
+							<div class="catalog_slider">
+								<img class="photo_slider_css" src="{% static 'css/png/slider-1.jpg' %}" alt="">
+								  <img class="photo_slider_css" src="{% static 'css/png/slider-2.png' %}" alt="">
+								  <img class="photo_slider_css" src="{% static 'css/png/slider-3.jpg' %}" alt="">
+								  <img class="photo_slider_css" src="{% static 'css/png/slider-4.jpg' %}" alt="">
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<a href="{% url 'shop:product_delivery' %}" class="button_menu">О доставке</a>
+				<a href="{% url 'shop:product_inform' %}" class="button_menu">О компании</a>
+		</div>
+	</div>
+	
+	<div class="content">
+    {% block content %}
+    {% endblock %}
+</div>
+	<div class="footer">
+		<hr>
+		<div class="footerbar">
+			<div class="footerbar-bar">
+				<p class="footerbar_title">ОБРАТНАЯ СВЯЗЬ</p>
+				<a href="">Тел. 8-912-463-92-93</a>
+				
+				
+				
+			</div>
+			<div class="footerbar-bar">
+				<p class="footerbar_title">НАША КОМПАНИЯ</p>
+				<a href="{% url 'shop:product_delivery' %}">Доставка</a>
+				<a href="{% url 'shop:product_inform' %}">О компании</a>
+				<a href="{% url 'shop:product_shop_i' %}">О магазине</a>
+				
+			</div>
+			<div>
+				
+			</div>
+			<div>
+				<p class="footerbar_title">ПРИСОЕДИНЯЙСЯ</p>
+				<a href=""><img src="{% static 'css/png/vk.png' %}"></a>
+			</div>
+		</div>
+		<hr>
+		<p class="print">© Интернет-магазин "ВИКТОРИЯ ПЛЮС"</p>
+	</div>
+	<input type="checkbox" class="hiden-inp" id="tap-menu-b" name="tap-menu-b">
+	<input type="checkbox" class="hiden-inp" id="tap-menu-a" name="tap-menu-b">
+	<input type="checkbox" class="hiden-inp" id="tap-menu-s" name="tap-menu-b">
+	<div class="tap-bar">
+		<label class="tap-bar-item" for="tap-menu-s"><img class="tap-bar-item-icon" src="{% static "img/search.png"%}"></label>
+		<a href="{% url 'shop:product_main' %}" class="tap-bar-item"><img class="tap-bar-item-icon" src="{% static "img/home.png"%}"></a>
+		<a href="{% url 'cart:cart_detail' %}" class="tap-bar-item"><img class="tap-bar-item-icon" src="{% static "img/cart.png"%}"></a>
+		<label class="tap-bar-item" for="tap-menu-a"><img class="tap-bar-item-icon" src="{% static "img/auth.png"%}"></label>
+	</div>
+	
+	<div class="tap-body">
+		<div class="tap-info">
+			<label class="tap-exit" for="tap-menu-b"><img src="{% static "img/exit.png" %}" class="tap-bar-exit"></label>
+			<a href="{% url 'shop:product_main' %}" class="tap-info-a">Главная</a>
+			<a href="{% url 'shop:product_new' %}" class="tap-info-a">Новинки</a>
+			<a href="{% url 'shop:product_list' %}" class="tap-info-a">Каталог</a>
+			<a href="{% url 'shop:product_delivery' %}" class="tap-info-a">О доставке</a>
+			<a href="{% url 'shop:product_inform' %}" class="tap-info-a">О компании</a>
+			<a href="{% url 'shop:product_shop_i' %}" class="tap-info-a">О магазине</a>
+			<p class="tap-info-a">Тел. 8-912-463-92-93</p>
+		</div>
+		<div class="tap-search">
+			<label class="tap-exit" for="tap-menu-s"><img src="{% static "img/exit.png" %}" class="tap-bar-exit"></label>
+			<h3 class="catalog_title"> Поиск</h3>
+            <form action="{% url "shop:product_list"  %}" method="get" >
+      {{ form_ss.as_p }}
+      <input type="submit" value="Search" class="button" style="visibility: hidden;">
+    </form>
+		</div>	
+		<div class="tap-auth">
+			<label class="tap-exit" for="tap-menu-a"><img src="{% static "img/exit.png" %}" class="tap-bar-exit"></label>
+			{% if user.is_authenticated %}
+     <p class="auth-p">Пользователь: {{ user.get_username }}</p>
+     <p class="auth-p but-auth"><a href="{% url 'logout'%}?next={{request.path}}" class="">Выйти из аккаунта</a></p>
+   {% else %}
+   				<p class="auth-p">Вы не авторизованны</p>
+				<a href="{% url 'login'%}?next={{request.path}}" class="auth-p">Войти</a>
+				{% endif %}
+			
+		
+		</div>
+	</div>
+	<script src="js/jquery.js"></script>
+
+</body>
+</html>

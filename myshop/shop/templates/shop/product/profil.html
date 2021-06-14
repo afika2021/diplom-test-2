@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    {% if user.is_authenticated %}Профиль:{{ user.get_username }} {% else %} Профиль: нужна регистрация {% endif %}
+{% endblock %}
+{% block content %}
+	 
+{% endblock %}

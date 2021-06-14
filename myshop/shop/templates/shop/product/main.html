@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+{% block content %}
+	<a href="{% url 'shop:product_list' %}"><div class="catalog_slider-m">
+								<img class="photo_slider_css-m" src="{% static 'css/png/slider-1.jpg' %}" alt="">
+								  <img class="photo_slider_css-m" src="{% static 'css/png/slider-2.png' %}" alt="">
+								  <img class="photo_slider_css-m" src="{% static 'css/png/slider-3.jpg' %}" alt="">
+								  <img class="photo_slider_css-m" src="{% static 'css/png/slider-4.jpg' %}" alt="">
+
+							</div>
+	</a>
+	<h3 class="catalog_title" style="padding-left: 10px; ">Новинки</h3>
+	<div class="main_new">
+	{% for product in products %}
+            <div class="item">
+                <a href="{{ product.get_absolute_url }}">
+                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" style="    flex-shrink: 0; object-fit: contain; width: 100%; height: 300px;border-radius: 15px;border: 1px solid rgb(#c0c0c0);">
+                </a>
+                <div class="product_price"> {{ product.price }} руб./шт </div>
+                 <a href="{{ product.get_absolute_url }}" class="product_title">{{ product.name }} {% if product.id > 999 %}({{product.id}}){% elif product.id > 99 %} (0{{product.id}}) {% elif  product.id > 9 %} (00{{product.id}}) {% else %} (000{{product.id}}) {%endif %}</a>
+            </div>
+        {% endfor %}
+     </div>
+{% endblock %}

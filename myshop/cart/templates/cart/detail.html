@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+  Корзина
+{% endblock %}
+
+{% block content %}
+<div class="cart_conteiner">
+  
+    <div class="cart_body">
+      <div class="cart_items">
+      {% for item in cart %}
+        {% with product=item.product %}
+        <hr>
+          <div class="cart_list">
+              <a href="{{ product.get_absolute_url }}">
+                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %} " style="    flex-shrink: 0; object-fit: contain; width: 300px; height: 300px; ">
+              </a>
+          
+            <div class="product_inf">
+              <div class="cart_list_title">{{ product.name }} {% if product.id > 999 %}({{product.id}}){% elif product.id > 99 %} (0{{product.id}}) {% elif  product.id > 9 %} (00{{product.id}}) {% else %} (000{{product.id}}) {%endif %}</div>
+              
+                <form action="{% url "cart:cart_add" product_id=product.id %}" method="post">
+                  {{ item.update_quantity_form.quantity }}
+                  {{ item.update_quantity_form.update }}
+                  <input type="submit" value="Обновить" class="button upd-b">
+                  {% csrf_token %}
+                </form>
+              
+              <a href="{% url "cart:cart_remove" product_id=product.id %}" class="button upd-b">Удалить</a>
+              <div>
+              <div class="num-c">Стоимость: {{ item.price }} руб./шт</div>
+              
+              <div class="num-c">Итого: {{ item.total_price }} руб.</div>
+              </div>
+            </div>
+            
+          </div>
+        {% endwith %}
+      {% endfor %}
+      </div>
+      <div class="total">
+        {% if cart.coupon %}
+          <div class="subtotal">
+              <h1 >Сумма заказа</h1>
+              <h2 class="num">{{ cart.get_total_price }} руб. </h2>
+          </div>
+          <div>
+              <p>
+                  Купон "{{ cart.coupon.code }}" 
+                  ({{ cart.coupon.discount }}% от стоимости) - {{ cart.get_discount|floatformat:"2" }} руб.
+              </p>
+               <p class=" neg">
+                  
+              </p>
+          </div>
+      {% endif %}
+        <h1>Итого</h1>
+        <h2 class="num">{{cart.get_total_price_after_discount|floatformat:"2" }} руб.</h2>
+        
+        <a href="{% url 'shop:product_list' %}" class="button cart-b">Перейти в каталог</a>
+    <a href="{% url 'orders:order_create' %}" class="button cart-b">
+    Оформить заказ
+</a>
+
+<form action="{% url "coupons:apply" %}" method="post" class="cart-form-cup">
+    {{ coupon_apply_form }}
+    <input type="submit" value="Активировать" class="button cup-b">
+    {% csrf_token %}
+</form>
+
+      </div>
+      
+    </div>
+    
+  <!-- </table> -->
+  <!-- <p class="text-right">
+    <a href="{% url 'shop:product_list' %}" class="button light">Continue shopping</a>
+    <a href="{% url 'orders:order_create' %}" class="button">
+    Checkout
+</a> -->
+
+  </p>
+  </div>
+{% endblock %}

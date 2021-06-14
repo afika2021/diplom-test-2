@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    {% if category %}{{ category.title }}{% else %}Products{% endif %}
+{% endblock %}
+{% block content %}
+    <a class="button list-a " href="{% url 'shop:product_list' %}">Вернуться в каталог</a>
+    <div class="product-detail">
+        <a href="{% url 'shop:product_list' %}" class="catalog_title deatil-a"></a>
+        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" style="    flex-shrink: 0; object-fit: contain; width: 650px; height: 650px">
+        <div>
+        <h1 style="margin: 10px; width: 100%;">Товар: <span class="detail-h">{{ product.name }}{% if product.id > 999 %}({{product.id}}){% elif product.id > 99 %} (0{{product.id}}) {% elif  product.id > 9 %} (00{{product.id}}) {% else %} (000{{product.id}}) {%endif %} </span></h1>
+        <h2 style="margin: 10px; width: 100%;">Категория: <a class="detail-a" href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
+        
+        <div style="margin: 10px; width: 100%;">
+            <h3 style="margin: 10px; width: 100%;">Артикул: <span style="font-weight: 1"> {% if product.id > 999 %}{{product.id}}{% elif product.id > 99 %} 0{{product.id}} {% elif  product.id > 9 %} 00{{product.id}} {% else %} 000{{product.id}} {%endif %} </span></h3>
+            <h3 style="margin: 10px; width: 100%;">Бренд: {% for brend in product.brend.all %}<span style="font-weight: 1">{{brend}}</span> {% endfor %}</h3>
+            <h3 style="margin: 10px; width: 100%;">Вставка: {% for insertin in product.insertin.all %}<span style="font-weight: 1">{{insertin}}</span> {% endfor %} </h3>
+            <h3 style="margin: 10px; width: 100%;">Бижутерный сплав: {% for alloy in product.alloy.all %}<span style="font-weight: 1">{{alloy}}</span> {% endfor %}</h3>
+            {% if product.size_ring != 0 %}<h3 style="margin: 10px; width: 100%;">Размер: <span style="font-weight: 1"> {{ product.size_ring }} </span></h3> {% endif %}
+            {% if product.size_x != 0 and product.size_y != 0 %}<h3 style="margin: 10px; width: 100%;">Размер: {{product.size_x}} Х {{product.size_y}} {% if product.size_z != 0 %}X {{product.size_z}} {%endif%}</h3> {% endif %}
+            {% if weight == 0 %}<h3 style="margin: 10px; width: 100%;">Вес: <span style="font-weight: 1"> {{ weight }} </span></h3>{% endif %}
+             {% if product.description != '' %}<h3 style="margin: 10px 0; width: 100%;">Описание </h3> 
+             <p>{{ product.description }}</p>{% endif %}
+        </div>
+        <p class="price" style="margin: 10px; font-size: 32px; font-weight: 500;">Цена: {{ product.price }} Руб.</p>
+        <form action="{% url "cart:cart_add" product.id %}" method="post" >
+            {{ cart_product_form }}
+            {% csrf_token %}
+            <input type="submit" value="Добавить в корзину" style="margin: 10px">
+        </form>
+        </div>
+    </div>
+<hr>
+<h1 class="catalog_title">Отзывы</h1>
+  {% if request.user.is_authenticated %}
+  <div class="comment-form">
+    <p class="catalog_title" style="margin-left: 10%; ">Напишите ваш отзыв </p>
+    <form action="" method="POST" class="comment-form-f">
+      {% csrf_token %}
+      {{ form }}
+      <button type="submit" name="button" class="button comment-b">Отправить</button>
+    </form>
+    {% else %}
+<div class="comment_inf" style="margin-left: 10%">
+    Для добавления отзыва нужна авторизация пользователя
+
+</div>
+
+    {% endif %}
+  </div>
+  <div class="comment-all">
+    {% for comment in comments %}
+    {% if comment.product.id == product.id %}
+    <div class="comment-item">
+        <div class="comment-item-inf">
+            <p class="catalog_title comment-item-inf-p">Автор:  {{ comment.user }} . Опубликованно: {{comment.timestamp}}</p>
+            <hr>
+        </div>
+
+        <div class="comment-text">
+      {{ comment }}
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+  
+{% endblock %}

@@ -1,0 +1,26 @@
+{% load static %}
+<label class="cat-menu" for="tap-menu-b"><img src="{% static "img/tool_bar.png" %}" style="width: 100%;height: 100%;z-index: 0;"></label>
+
+<div id="sidebar" class="sidebar">
+
+        <h3 class="catalog_title">Категории</h3>
+        
+                <a href="{% url 'shop:product_list' %}" <li {% if not category %}class="selected button"{% else %}  class="button" {% endif %}>Все</a>
+                
+                {% for c in categories %}
+               
+                <a href="{{ c.get_absolute_url }}" {% if category.slug == c.slug %}class="selected button"{% else %}  class="button" {% endif %}>{{ c.name }}</a>
+               
+            {% endfor %}
+       <!--  <h3 class="catalog_title">Сплавы</h3>
+        
+        
+                <
+                {% for c in categories %}
+               
+                <a href="{{ c.get_absolute_url_a }}" {% if alloy.slug == c.slug %}class="selected button"{% else %}  class="button" {% endif %}>{{ c.name }}</a>
+               
+            {% endfor %} -->
+             {% include "shop/product/search.html" %}
+            
+    </div>
